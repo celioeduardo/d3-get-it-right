@@ -1,0 +1,1 @@
+{"version":3,"file":"bundle.js","sources":["index.js"],"sourcesContent":["import { select } from 'd3';\n\nconsole.log('Greetings');\n\nconsole.log(select);\n\n"],"names":["select"],"mappings":";;;CAEA,OAAO,CAAC,GAAG,CAAC,WAAW,CAAC,CAAC;AACzB;CACA,OAAO,CAAC,GAAG,CAACA,SAAM,CAAC;;;;;;"}
