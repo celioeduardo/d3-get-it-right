@@ -75,6 +75,8 @@
       const marks = data.map(d => ({
         x: x(xValue(d)),
         y: y(yValue(d)),
+        p_x: xValue(d),
+        p_y: yValue(d)
       }));
 
       // Rendering
@@ -84,6 +86,8 @@
         .attr('cx', d => d.x)
         .attr('cy', d => d.y)
         .attr('r', radius)
+          .append('title')
+          .text(d => `( ${d.p_x} , ${d.p_y} )`)
       
       svg.selectAll('g.yAxis').data([1])
         .join('g')
