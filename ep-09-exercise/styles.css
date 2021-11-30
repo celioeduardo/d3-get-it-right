@@ -1,0 +1,11 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+.tick text {
+  font-size: 10px;
+}
+
+text.label_y {
+  font-size: 10px;
+}
