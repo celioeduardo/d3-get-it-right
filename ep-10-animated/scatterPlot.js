@@ -1,4 +1,4 @@
-import { scaleLinear, extent, axisLeft, axisBottom } from 'd3';
+import { scaleLinear, extent, axisLeft, axisBottom, transition } from 'd3';
 
 export const scatterPlot = () => {
   let width;
@@ -25,16 +25,29 @@ export const scatterPlot = () => {
       title: `( ${xValue(d)} , ${yValue(d)} )`
     }));
 
-    // Rendering
-    selection.selectAll('circle')
-      .data(marks)
-      .join('circle')
-      .attr('cx', d => d.x)
-      .attr('cy', d => d.y)
-      .attr('r', radius)
-      .append('title')
-      .text(d => d.title);
+    const t = transition().duration(1000);
 
+    // Rendering
+    const circles = selection.selectAll('circle')
+      .data(marks)
+      .join(
+        (enter) => enter
+          .append('circle')
+          .attr('cx', d => d.x)
+          .attr('cy', d => d.y)
+          .attr('r', 0)
+          .call(enter => enter
+            .transition(t).attr('r',radius)
+          ), 
+        (update) => update
+          .call(update => update
+            .transition(t)
+            .delay((d, i) => i * 15)
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y)
+          ), 
+        (exit) => exit.remove());
+    
     selection
       .selectAll('.y-axis')
       .data([null])
@@ -44,11 +57,13 @@ export const scatterPlot = () => {
       .call(axisLeft(y))
 
     selection
+      // .append('g')
       .selectAll('.x-axis')
       .data([null])
       .join('g')
       .attr('class','x-axis')
       .attr('transform', `translate(0,${height - margin.bottom})`)
+      .transition(t)
       .call(axisBottom(x))
 
   };
