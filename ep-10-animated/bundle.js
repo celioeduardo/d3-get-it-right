@@ -3767,32 +3767,40 @@
 
       const t = transition().duration(1000);
 
+      const initializeRadius = (circles) => {
+        circles.attr('r', 0);
+      };
+      
+      const growRadius = (circles) => {
+        circles.transition(t).attr('r', radius);
+      };
+
+      const positionCircles = (circles) => {
+        circles.attr('cx', d => d.x).attr('cy', d => d.y);
+      };
+
       // Rendering
       selection.selectAll('circle')
         .data(marks)
         .join(
           (enter) => enter
             .append('circle')
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y)
-            .attr('r', 0)
-            .call(enter => enter
-              .transition(t).attr('r',radius)
-            ), 
+            .call(initializeRadius)
+            .call(positionCircles)
+            .call(growRadius),
           (update) => update
             .call(update => update
               .transition(t)
               .delay((d, i) => i * 15)
-              .attr('cx', d => d.x)
-              .attr('cy', d => d.y)
-            ), 
+              .call(positionCircles)
+            ),
           (exit) => exit.remove());
-      
+
       selection
         .selectAll('.y-axis')
         .data([null])
         .join('g')
-        .attr('class','y-axis')
+        .attr('class', 'y-axis')
         .attr('transform', `translate(${margin.left},0)`)
         .call(axisLeft(y));
 
@@ -3801,7 +3809,7 @@
         .selectAll('.x-axis')
         .data([null])
         .join('g')
-        .attr('class','x-axis')
+        .attr('class', 'x-axis')
         .attr('transform', `translate(0,${height - margin.bottom})`)
         .transition(t)
         .call(axisBottom(x));
@@ -3823,7 +3831,7 @@
     my.xValue = function (_) {
       return arguments.length ? (xValue = _, my) : xValue;
     };
-    
+
     my.yValue = function (_) {
       return arguments.length ? (yValue = _, my) : yValue;
     };
@@ -3831,7 +3839,7 @@
     my.margin = function (_) {
       return arguments.length ? (margin = _, my) : margin;
     };
-    
+
     my.radius = function (_) {
       return arguments.length ? (radius = +_, my) : radius;
     };
