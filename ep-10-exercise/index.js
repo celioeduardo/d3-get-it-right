@@ -48,7 +48,7 @@ const main = async () => {
   //   'sepal_length'
   // ];
   const columns = [
-    {column: 'petal_width', name:'Petal width'},
+    {column: 'petal_width', name:'Petal width 😄'},
     {column: 'sepal_width', name:'Sepal width'},
     {column: 'petal_length', name:'Petal length'},
     {column: 'sepal_length', name:'Sepal length'}

@@ -88,8 +88,11 @@ export const scatterPlot = () => {
       .attr('x',width/2)
       .attr('y', 40)
       .transition(t)
+      .attr('y', height + 100)
+      .transition(t)
+      .attr('y', 40)
       .text(xLabel);
-      
+
   };
 
   my.width = function (_) {
