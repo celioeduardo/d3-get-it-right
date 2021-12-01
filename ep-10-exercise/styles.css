@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+.tick text {
+  font-size: 15px;
+}
+
+text.x-label {
+  font-size: 15px;
+}
+
+text.y-label {
+  font-size: 15px;
+}
