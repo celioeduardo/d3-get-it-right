@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  /* overflow: hidden; */
+}
+.tick text {
+  font-size: 10px;
+}
+
+text.label_y {
+  font-size: 15px;
+}
+
+text.label_x {
+  font-size: 15px;
+}
+
+.charts {
+  display: flex;
+  /* justify-content: space-between; */
+  flex-wrap: wrap;
+  /* justify-items: stretch; */
+  /* flex-direction: column; */
+  /* align-items: stretch; */
+  /* max-width: 800px; */
+  /* margin: 0 auto; */
+}
+
+.svg-wrap {
+  display: flex;
+  flex: 1 1 500px;
+  margin: 1px;
+  min-height: 300px;
+}
+
+.svg-wrap svg {
+  flex: 1;
+}
