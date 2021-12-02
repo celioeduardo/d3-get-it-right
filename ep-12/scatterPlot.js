@@ -21,20 +21,17 @@ export const scatterPlot = () => {
   let yType;
 
   const my = (selection) => {
-    let x;
+    const x = (
+      xType === "categorical"
+        ? scalePoint().domain(data.map(xValue)).padding(0.2).round(true)
+        : scaleLinear().domain(extent(data, xValue))
+    ).range([margin.left, width - margin.right]);
 
-    if (xType === "categorical")
-      x = scalePoint().domain(data.map(xValue)).padding(1).round(true);
-    else x = scaleLinear().domain(extent(data, xValue));
-
-    x.range([margin.left, width - margin.right]);
-
-    let y;
-    if (yType === "categorical")
-      y = scalePoint().domain(data.map(yValue)).padding(0.2).round(true);
-    else y = scaleLinear().domain(extent(data, yValue));
-
-    y.range([height - margin.bottom, margin.top]);
+    const y = (
+      yType === "categorical"
+        ? scalePoint().domain(data.map(yValue)).padding(0.2).round(true)
+        : scaleLinear().domain(extent(data, yValue))
+    ).range([height - margin.bottom, margin.top]);
 
     // Data processing
     const marks = data.map((d) => ({

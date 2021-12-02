@@ -21,5 +21,8 @@ text.y-label {
   right: 0; 
   display: flex;
   justify-content: space-around; 
+}
 
+circle {
+  fill-opacity: 0.2;
 }

@@ -3955,20 +3955,17 @@
     let yType;
 
     const my = (selection) => {
-      let x;
+      const x = (
+        xType === "categorical"
+          ? point().domain(data.map(xValue)).padding(0.2).round(true)
+          : linear().domain(extent(data, xValue))
+      ).range([margin.left, width - margin.right]);
 
-      if (xType === "categorical")
-        x = point().domain(data.map(xValue)).padding(1).round(true);
-      else x = linear().domain(extent(data, xValue));
-
-      x.range([margin.left, width - margin.right]);
-
-      let y;
-      if (yType === "categorical")
-        y = point().domain(data.map(yValue)).padding(0.2).round(true);
-      else y = linear().domain(extent(data, yValue));
-
-      y.range([height - margin.bottom, margin.top]);
+      const y = (
+        yType === "categorical"
+          ? point().domain(data.map(yValue)).padding(0.2).round(true)
+          : linear().domain(extent(data, yValue))
+      ).range([height - margin.bottom, margin.top]);
 
       // Data processing
       const marks = data.map((d) => ({
@@ -4199,7 +4196,7 @@
         top: 30,
         right: 20,
         bottom: 50,
-        left: 60,
+        left: 100,
       })
       .radius(3);
 
@@ -4213,8 +4210,8 @@
       { value: "species", text: "Species 💐", type: "categorical" },
     ];
 
-    const columnsByType = new Map(
-      options.map((column) => [column.value, column])
+    const columnsByName = new Map(
+      options.map((option) => [option.value, option])
     );
 
     // Option using find
@@ -4229,8 +4226,8 @@
         .on("change", (column) => {
           plot
             .xValue((d) => d[column])
-            .xLabel(columnsByType.get(column).text)
-            .xType(columnsByType.get(column).type);
+            .xLabel(columnsByName.get(column).text)
+            .xType(columnsByName.get(column).type);
           svg.call(plot);
         })
     );
@@ -4243,8 +4240,8 @@
         .on("change", function (column) {
           plot
             .yValue((d) => d[column])
-            .yLabel(columnsByType.get(column).text)
-            .yType(columnsByType.get(column).type);
+            .yLabel(columnsByName.get(column).text)
+            .yType(columnsByName.get(column).type);
           svg.call(plot);
         })
     );

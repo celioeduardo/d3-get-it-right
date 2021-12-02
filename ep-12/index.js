@@ -48,7 +48,7 @@ const main = async () => {
       top: 30,
       right: 20,
       bottom: 50,
-      left: 60,
+      left: 100,
     })
     .radius(3);
 
@@ -62,8 +62,8 @@ const main = async () => {
     { value: "species", text: "Species 💐", type: "categorical" },
   ];
 
-  const columnsByType = new Map(
-    options.map((column) => [column.value, column])
+  const columnsByName = new Map(
+    options.map((option) => [option.value, option])
   );
 
   // Option using find
@@ -78,8 +78,8 @@ const main = async () => {
       .on("change", (column) => {
         plot
           .xValue((d) => d[column])
-          .xLabel(columnsByType.get(column).text)
-          .xType(columnsByType.get(column).type);
+          .xLabel(columnsByName.get(column).text)
+          .xType(columnsByName.get(column).type);
         svg.call(plot);
       })
   );
@@ -92,8 +92,8 @@ const main = async () => {
       .on("change", function (column) {
         plot
           .yValue((d) => d[column])
-          .yLabel(columnsByType.get(column).text)
-          .yType(columnsByType.get(column).type);
+          .yLabel(columnsByName.get(column).text)
+          .yType(columnsByName.get(column).type);
         svg.call(plot);
       })
   );
