@@ -46,14 +46,14 @@ export const scatterPlot = () => {
 
     // Data processing
     const marks = data
-      .filter(d => filter ? filter(d) : true)
+      .filter((d) => (filter ? filter(d) : true))
       .map((d) => ({
-      x: x(xValue(d)),
-      y: y(yValue(d)),
-      color: category ? color(category(d)) : "",
-      title: `( ${xValue(d)} , ${yValue(d)} )`,
-      id: d.id
-    }));
+        x: x(xValue(d)),
+        y: y(yValue(d)),
+        color: category ? color(category(d)) : "",
+        title: `( ${xValue(d)} , ${yValue(d)} )`,
+        id: d.id,
+      }));
 
     const t = transition().duration(1000);
 
@@ -72,7 +72,7 @@ export const scatterPlot = () => {
     // Rendering
     const circles = selection
       .selectAll("circle")
-      .data(marks, d => d.id)
+      .data(marks, (d) => d.id)
       .join(
         (enter) =>
           enter
@@ -89,12 +89,15 @@ export const scatterPlot = () => {
               .delay((d, i) => i * 15)
               .call(positionCircles)
           ),
-        (exit) => exit.call((exit) =>
-          exit
-            .transition(t).duration(100)
-            .delay((d, i) => i * Math.random() * 10)
-            .attr('r',0)
-            .remove())
+        (exit) =>
+          exit.call((exit) =>
+            exit
+              .transition(t)
+              .duration(100)
+              .delay((d, i) => i * Math.random() * 10)
+              .attr("r", 0)
+              .remove()
+          )
       );
 
     selection

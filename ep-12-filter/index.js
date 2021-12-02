@@ -44,7 +44,7 @@ const main = async () => {
   const plot = scatterPlot()
     .width(width)
     .height(height)
-    .data(data, d => d.id)
+    .data(data, (d) => d.id)
     .xValue((d) => d.petal_width)
     .xLabel("Petal Width 🌼")
     .xType("quantitative")
@@ -83,8 +83,6 @@ const main = async () => {
   // Option using find
   // const columnLabel = (column) =>
   //   options.find((opt) => opt.value === column).text;
-
-  
 
   xMenu.call(
     menu()
