@@ -37,11 +37,14 @@ const specieMenu = menuContainer.append("div");
 const main = async () => {
   let specie = "all";
 
+  const specieFilter = (d) => specie === "all" || d.species === specie;
+
   const data = await csv(csvUrl, parseRow);
+
   const plot = scatterPlot()
     .width(width)
     .height(height)
-    .data(data)
+    .data(data, d => d.id)
     .xValue((d) => d.petal_width)
     .xLabel("Petal Width 🌼")
     .xType("quantitative")
@@ -49,13 +52,14 @@ const main = async () => {
     .yLabel("Petal Width 🌼")
     .yType("quantitative")
     .category((d) => d.species)
+    .filter(specieFilter)
     .margin({
       top: 30,
       right: 20,
       bottom: 50,
       left: 60,
     })
-    .radius(3);
+    .radius(5);
 
   svg.call(plot);
 
@@ -80,7 +84,7 @@ const main = async () => {
   // const columnLabel = (column) =>
   //   options.find((opt) => opt.value === column).text;
 
-  const specieFilter = (d) => specie === "all" || d.species === specie;
+  
 
   xMenu.call(
     menu()
@@ -89,7 +93,7 @@ const main = async () => {
       .options(options)
       .on("change", (column) => {
         plot
-          .data(data.filter(specieFilter))
+          .data(data)
           .xValue((d) => d[column])
           .xLabel(columnsByType.get(column).text)
           .xType(columnsByType.get(column).type);
@@ -104,7 +108,7 @@ const main = async () => {
       .options(options)
       .on("change", function (column) {
         plot
-          .data(data.filter(specieFilter))
+          .data(data)
           .yValue((d) => d[column])
           .yLabel(columnsByType.get(column).text)
           .yType(columnsByType.get(column).type);
@@ -119,7 +123,7 @@ const main = async () => {
       .options(specieOptions)
       .on("change", function (_specie) {
         specie = _specie;
-        plot.data(data.filter(specieFilter));
+        plot.data(data);
         svg.call(plot);
       })
   );

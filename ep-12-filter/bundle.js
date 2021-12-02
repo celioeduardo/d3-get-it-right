@@ -3962,11 +3962,12 @@
     let xType;
     let yType;
     let category;
+    let filter;
 
     const my = (selection) => {
-      
-      const color = ordinal(schemeCategory10)
-        .domain(data.map(d => d.species));
+      const color = ordinal(schemeCategory10).domain(
+        data.map((d) => d.species)
+      );
 
       let x;
 
@@ -3984,11 +3985,14 @@
       y.range([height - margin.bottom, margin.top]);
 
       // Data processing
-      const marks = data.map((d) => ({
+      const marks = data
+        .filter(d => filter ? filter(d) : true)
+        .map((d) => ({
         x: x(xValue(d)),
         y: y(yValue(d)),
-        color: category ? color(category(d)) : '',
+        color: category ? color(category(d)) : "",
         title: `( ${xValue(d)} , ${yValue(d)} )`,
+        id: d.id
       }));
 
       const t = transition().duration(1000);
@@ -4008,24 +4012,29 @@
       // Rendering
       selection
         .selectAll("circle")
-        .data(marks)
+        .data(marks, d => d.id)
         .join(
           (enter) =>
             enter
               .append("circle")
-              .attr('fill',d => d.color)
+              .attr("fill", (d) => d.color)
               .call(initializeRadius)
               .call(positionCircles)
               .call(growRadius),
           (update) =>
             update.call((update) =>
               update
-                .attr('fill',d => d.color)
+                .attr("fill", (d) => d.color)
                 .transition(t)
                 .delay((d, i) => i * 15)
                 .call(positionCircles)
             ),
-          (exit) => exit.remove()
+          (exit) => exit.call((exit) =>
+            exit
+              .transition(t).duration(100)
+              .delay((d, i) => i * Math.random() * 10)
+              .attr('r',0)
+              .remove())
         );
 
       selection
@@ -4117,6 +4126,10 @@
       return arguments.length ? ((category = _), my) : category;
     };
 
+    my.filter = function (_) {
+      return arguments.length ? ((filter = _), my) : filter;
+    };
+
     return my;
   };
 
@@ -4206,28 +4219,31 @@
   const specieMenu = menuContainer.append("div");
 
   const main = async () => {
+    let specie = "all";
 
-    let specie = 'all';
+    const specieFilter = (d) => specie === "all" || d.species === specie;
 
     const data = await csv(csvUrl, parseRow);
+
     const plot = scatterPlot()
       .width(width)
       .height(height)
-      .data(data)
+      .data(data, d => d.id)
       .xValue((d) => d.petal_width)
       .xLabel("Petal Width 🌼")
       .xType("quantitative")
       .yValue((d) => d.petal_width)
       .yLabel("Petal Width 🌼")
       .yType("quantitative")
-      .category(d => d.species)
+      .category((d) => d.species)
+      .filter(specieFilter)
       .margin({
         top: 30,
         right: 20,
         bottom: 50,
         left: 60,
       })
-      .radius(3);
+      .radius(5);
 
     svg.call(plot);
 
@@ -4239,20 +4255,20 @@
       { value: "species", text: "Species 💐", type: "categorical" },
     ];
 
-    const specieOptions = ['all', ... new Map(data.map(d => [d.species,d.species])).keys()]
-      .map(d => ({value: d, text: d}));
+    const specieOptions = [
+      "all",
+      ...new Map(data.map((d) => [d.species, d.species])).keys(),
+    ].map((d) => ({ value: d, text: d }));
 
     const columnsByType = new Map(
       options.map((column) => [column.value, column])
     );
 
-    
-
     // Option using find
     // const columnLabel = (column) =>
     //   options.find((opt) => opt.value === column).text;
 
-    const specieFilter = d => (specie === 'all') || (d.species === specie);
+    
 
     xMenu.call(
       menu()
@@ -4261,7 +4277,7 @@
         .options(options)
         .on("change", (column) => {
           plot
-            .data(data.filter(specieFilter))
+            .data(data)
             .xValue((d) => d[column])
             .xLabel(columnsByType.get(column).text)
             .xType(columnsByType.get(column).type);
@@ -4276,7 +4292,7 @@
         .options(options)
         .on("change", function (column) {
           plot
-            .data(data.filter(specieFilter))
+            .data(data)
             .yValue((d) => d[column])
             .yLabel(columnsByType.get(column).text)
             .yType(columnsByType.get(column).type);
@@ -4291,7 +4307,7 @@
         .options(specieOptions)
         .on("change", function (_specie) {
           specie = _specie;
-          plot.data(data.filter(specieFilter));
+          plot.data(data);
           svg.call(plot);
         })
     );
