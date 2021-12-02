@@ -4165,8 +4165,6 @@
     d.sepal_width = +d.sepal_width;
     d.petal_length = +d.petal_length;
     d.petal_width = +d.petal_width;
-    d.id = i;
-    console.log(d);
     return d;
   };
 
