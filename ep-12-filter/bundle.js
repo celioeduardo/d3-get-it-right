@@ -3986,14 +3986,14 @@
 
       // Data processing
       const marks = data
-        .filter(d => filter ? filter(d) : true)
+        .filter((d) => (filter ? filter(d) : true))
         .map((d) => ({
-        x: x(xValue(d)),
-        y: y(yValue(d)),
-        color: category ? color(category(d)) : "",
-        title: `( ${xValue(d)} , ${yValue(d)} )`,
-        id: d.id
-      }));
+          x: x(xValue(d)),
+          y: y(yValue(d)),
+          color: category ? color(category(d)) : "",
+          title: `( ${xValue(d)} , ${yValue(d)} )`,
+          id: d.id,
+        }));
 
       const t = transition().duration(1000);
 
@@ -4012,7 +4012,7 @@
       // Rendering
       selection
         .selectAll("circle")
-        .data(marks, d => d.id)
+        .data(marks, (d) => d.id)
         .join(
           (enter) =>
             enter
@@ -4029,12 +4029,15 @@
                 .delay((d, i) => i * 15)
                 .call(positionCircles)
             ),
-          (exit) => exit.call((exit) =>
-            exit
-              .transition(t).duration(100)
-              .delay((d, i) => i * Math.random() * 10)
-              .attr('r',0)
-              .remove())
+          (exit) =>
+            exit.call((exit) =>
+              exit
+                .transition(t)
+                .duration(100)
+                .delay((d, i) => i * Math.random() * 10)
+                .attr("r", 0)
+                .remove()
+            )
         );
 
       selection
@@ -4228,7 +4231,7 @@
     const plot = scatterPlot()
       .width(width)
       .height(height)
-      .data(data, d => d.id)
+      .data(data, (d) => d.id)
       .xValue((d) => d.petal_width)
       .xLabel("Petal Width 🌼")
       .xType("quantitative")
@@ -4267,8 +4270,6 @@
     // Option using find
     // const columnLabel = (column) =>
     //   options.find((opt) => opt.value === column).text;
-
-    
 
     xMenu.call(
       menu()
