@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+.tick text {
+  font-size: 15px;
+}
+
+text.x-label {
+  font-size: 15px;
+}
+
+text.y-label {
+  font-size: 15px;
+}
+
+.menu-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0; 
+  display: flex;
+  justify-content: space-around; 
+
+}
