@@ -4,6 +4,9 @@ It's a serie of episodes by Curran Kelleher on Youtube about Data Visualization,
 
 [Check the Youtube playlist](https://www.youtube.com/watch?v=UQ_kqGDM8A4&list=PL9yYRbwpkyksegmB9HKX8YWP1DMZyZC9b&index=1)
 
+[My examples - GitHub pages](./main/html)
+
+
 [My examples - Observable](https://observablehq.com/collection/@celioeduardo/get-it-right-series)
 
 ## Notes
